@@ -8,6 +8,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 SET(CMAKE_BUILD_TYPE Debug)
+SET (DEBUG true)
 
 link_directories(${CMAKE_SOURCE_DIR}/lib)
 
@@ -20,6 +21,6 @@ ADD_LIBRARY(Creamlinux SHARED
 )
 
 # If you want to build the testapp, you'll need to find libsteam_api and copy it to lib/libsteam_api.so
-# ADD_EXECUTABLE(Testapp ${CMAKE_SOURCE_DIR}/test.cpp)
-# TARGET_LINK_LIBRARIES(Testapp libsteam_api.so)
-# TARGET_LINK_LIBRARIES(${CREAMLINUX_NAME} )
+ADD_EXECUTABLE(Testapp ${CMAKE_SOURCE_DIR}/test.cpp)
+TARGET_LINK_LIBRARIES(Testapp libsteam_api.so)
+#TARGET_LINK_LIBRARIES(${CREAMLINUX_NAME} )
