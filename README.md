@@ -23,4 +23,4 @@ Valve for steamworks
 
 [gabime](https://github.com/gabime) for [spdlog](https://github.com/gabime/spdlog)
 
-goddeysfreya for [hookey](https://github.com/goddessfreya/hookey)
+[goddeysfreya](https://github.com/goddessfreya) for [hookey](https://github.com/goddessfreya/hookey)
