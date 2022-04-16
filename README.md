@@ -17,7 +17,7 @@ When the dialog pops up, it will look a bit strange due to steam's bundled deps 
 If you want to load cream_api.ini from a separate path, specify the path with CREAM_CONFIG_PATH;
 
 ## Credits
-mINI for ini.h
+[pulzed](https://github.com/pulzed) for [mINI](https://github.com/pulzed/mINI)(ini.h)
 
 Valve for steamworks
 
