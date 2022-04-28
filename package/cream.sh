@@ -1,8 +1,8 @@
 #!/bin/bash
 result=$(zenity --title="Launch Options" --list "Start Game" "Edit Creamlinux settings" --column="Launch Options")
 # Supported games
-GAME_NAMES=("Hearts Of Iron IV" "Europa Universalis IV" "Cities: Skylines" "Paradox Launcher (Don't launch game here)")
-GAME_BINARIES=("./hoi4" "./eu4" "./Cities.x64" "./dowser")
+GAME_NAMES=("Hearts Of Iron IV" "Europa Universalis IV" "Cities: Skylines" "Stellaris" "Paradox Launcher (Don't launch game here)")
+GAME_BINARIES=("./hoi4" "./eu4" "./Cities.x64" "./stellaris" "./dowser")
 # stupid fix for stupid "backwards compatability" reasons
 # seriously i spent fucking 1h and 30mins figuring this shit out
 # really, backwards compatibility is stupid and breaks stuff most of the time (windows is a good example)
