@@ -1,8 +1,8 @@
 #include <iostream>
 #include <fstream>
-#include "steam/steam_api.h"
+#include "ext/steamworks_sdk/steam/steam_api.h"
 #include "spdlog/spdlog.h"
-#include "ini.h"
+#include "ext/ini.h"
 #include <string>
 #include <cassert>
 #include <vector>
