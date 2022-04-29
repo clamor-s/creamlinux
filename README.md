@@ -1,10 +1,12 @@
 # Creamlinux
 CreamApi(dlc unlocker) for Linux.
 
-## BIG NOTICE PLEASE READ
-This has primarily been made for my personal use, however I have decided to open source it. A lot of the code is based on hookey, which means this will work for HOI4 but other games are unknown. Maybe don't try it on VAC-secure games. THIS WILL NOT WORK THROUGH WINE/PROTON (maybe)
+## Support
+A lot of the code is based on hookey, which means this should work for HOI4 but other games are unknown. Maybe don't try it on VAC-secure games. Probably doesn't work with wine/proton.
 
 ## Usage
+First, clone project recursively. 
+`git clone https://github.com/20PercentRendered/creamlinux --recursive`
 1. build the project with `sh build.sh`.
 
 2. Copy build/lib folder contents to the game folder.
