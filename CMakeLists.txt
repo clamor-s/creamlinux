@@ -19,7 +19,11 @@ ADD_LIBRARY(Creamlinux SHARED
 	${CMAKE_SOURCE_DIR}/ext/steamworks_sdk/steam
 	# ${CMAKE_SOURCE_DIR}/Creamlinux_steamapps.cpp
 )
-
+add_custom_command(
+        TARGET Creamlinux POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+                ${CMAKE_SOURCE_DIR}/package/
+                ${CMAKE_CURRENT_BINARY_DIR}/lib/)
 # If you want to build the testapp, you'll need to find libsteam_api and copy it to lib/libsteam_api.so
 #ADD_EXECUTABLE(Testapp ${CMAKE_SOURCE_DIR}/test.cpp)
 #TARGET_LINK_LIBRARIES(Testapp libsteam_api.so)
