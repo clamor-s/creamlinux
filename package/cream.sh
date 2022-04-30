@@ -1,19 +1,32 @@
 #!/bin/bash
 result=$(zenity --title="Launch Options" --list "Start Game" "Edit Creamlinux settings" --column="Launch Options")
 # Supported games
-GAME_NAMES=("Hearts Of Iron IV" "Europa Universalis IV" "Cities: Skylines" "Stellaris" "Paradox Launcher (Don't launch game here)")
+GAME_NAMES=("Hearts Of Iron IV" "Europa Universalis IV" "Cities: Skylines" "Stellaris" "PDX Launcher (don't click play)")
 GAME_BINARIES=("./hoi4" "./eu4" "./Cities.x64" "./stellaris" "./dowser")
-# stupid fix for stupid "backwards compatability" reasons
-# seriously i spent fucking 1h and 30mins figuring this shit out
-# really, backwards compatibility is stupid and breaks stuff most of the time (windows is a good example)
-# word splitting is one of those cases
-# who has any genuine use for word splitting????
+launch_game () {
+  # LD_PRELOAD doesn't support spaces, do this instead
+  cp "$PWD/libCreamlinux.so" /tmp/libCreamlinux.so
+  # reset backwards compatible stuff so games that DO use it don't break
+  unset IFS
+  # paradox launcher segfaults with creamlinux, if launching launcher, do it differently
+  if [ "$SELECTED_GAME" -eq "./dowser" ]; then
+      $SELECTED_GAME "$@"
+      exit 0
+  fi
+  # actually launch the game
+  LD_PRELOAD="$LD_PRELOAD /tmp/libCreamlinux.so" $SELECTED_GAME "$@"
+}
+# ifs is required because zenity fucks up without it
 export IFS=""
+
+if [ -z "$CREAM_GAME_NAME" ]; then
+  SELECTED_GAME=$CREAM_GAME_NAME
+  launch_game
+fi
+
 case $result in
 
   "Start Game")
-    # LD_PRELOAD doesn't support spaces, do this instead
-    cp "$PWD/libCreamlinux.so" /tmp/libCreamlinux.so
     FOUND_BINS=()
     INDEX=0
     INDEX_ADDED=0
@@ -49,19 +62,11 @@ case $result in
     # is the game variable set
     if [ -z "$SELECTED_INDEX" ]; then
       zenity --error --text="Cancelled: No game selected"
-      # unset ifs so we don't fuck up every other program
+      # unset ifs before we quit
       unset IFS
       exit 1
     else
-     # reset stupid backwards compatible stuff so games that DO use it don't break
-     unset IFS
-     # paradox launcher segfaults with creamlinux, if launching launcher, do it differently
-     if [ "$SELECTED_GAME" -eq "./dowser" ]; then
-         $SELECTED_GAME "$@"
-         exit 0
-     fi
-     # actually launch the game
-     LD_PRELOAD="$LD_PRELOAD /tmp/libCreamlinux.so" $SELECTED_GAME "$@"
+     launch_game
     fi
     ;;
 
