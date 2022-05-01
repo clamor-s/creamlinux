@@ -59,7 +59,8 @@ jobs:
         body: ""
         draft: false
         prerelease: false
-    - uses: papeloto/action-zip@v1
+    - name: Create zip of compile outputs
+      uses: papeloto/action-zip@v1
       if: ${{ github.event_name == 'workflow_dispatch'}}
       with:
         files: build/lib
