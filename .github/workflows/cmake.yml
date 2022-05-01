@@ -41,6 +41,7 @@ jobs:
           ${{github.workspace}}/build/lib
     - name: Create Release
       id: create_release
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
@@ -51,11 +52,12 @@ jobs:
         draft: false
         prerelease: false
     - uses: papeloto/action-zip@v1
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
       with:
-        files: |
-          ${{github.workspace}}/build/lib
+        files: build/lib
         dest: creamlinux.zip
     - name: Upload Release Assets
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
       id: upload-release-asset 
       uses: actions/upload-release-asset@v1
       env:
