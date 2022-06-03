@@ -2,7 +2,7 @@
 CreamApi(dlc unlocker) for Linux.
 
 ## Support
-This should work for any linux native steam title that doesn't block LD_PRELOAD. However not all games will be visible in the launcher. This is due to change (launcher rewrite)
+This should work for any linux native steam title that doesn't block LD_PRELOAD. Not all games will be visible in the launcher. 
 ## Tested games
  - Hearts Of Iron IV
  - Stellaris 
