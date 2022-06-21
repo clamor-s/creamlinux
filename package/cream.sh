@@ -1,8 +1,8 @@
 #!/bin/bash
 result=$(zenity --title="Launch Options" --list "Start Game" "Edit Creamlinux settings" --column="Launch Options")
 # Supported games
-GAME_NAMES=("Hearts Of Iron IV" "Europa Universalis IV" "Cities: Skylines" "Stellaris" "PDX Launcher" "Golf With Your Friends")
-GAME_BINARIES=("./hoi4" "./eu4" "./Cities.x64" "./stellaris" "./dowser" "./Golf With Your Friends.x86_64")
+GAME_NAMES=("Hearts Of Iron IV" "Europa Universalis IV" "Cities: Skylines" "Stellaris" "PDX Launcher")
+GAME_BINARIES=("./hoi4" "./eu4" "./Cities.x64" "./stellaris" "./dowser")
 function launch_game {
   # LD_PRELOAD doesn't support spaces, do this instead
   cp "$PWD/libCreamlinux.so" /tmp/libCreamlinux.so
@@ -56,6 +56,7 @@ case $result in
     if [ "${#FOUND_BINS[@]}" -eq "1" ]; then
       echo "Found one binary, running"
       SELECTED_GAME="${FOUND_BINS[0]}"
+      SELECTED_INDEX=1
     else
       echo "Found multiple binaries, triggering prompt"
       SELECTED_INDEX=$(zenity --list --column="I" --column="Game Name" --column="Binary Path" --title="Launch Options" --text="Multiple game binaries were found. Please pick the game you want to run." ${MANGLED_OUTPUT[@]} )
