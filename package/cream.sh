@@ -1,8 +1,8 @@
 #!/bin/bash
 result=$(zenity --title="Launch Options" --list "Start Game" "Edit Creamlinux settings" --column="Launch Options")
 # Supported games
-GAME_NAMES=("Hearts Of Iron IV" "Europa Universalis IV" "Cities: Skylines" "Stellaris" "PDX Launcher")
-GAME_BINARIES=("./hoi4" "./eu4" "./Cities.x64" "./stellaris" "./dowser")
+GAME_NAMES=("Hearts Of Iron IV" "Europa Universalis IV" "Cities: Skylines" "Stellaris" "PDX Launcher" "PAYDAY 2")
+GAME_BINARIES=("./hoi4" "./eu4" "./Cities.x64" "./stellaris" "./dowser" "./payday2_release")
 function launch_game {
   # LD_PRELOAD doesn't support spaces, do this instead
   cp "$PWD/libCreamlinux.so" /tmp/libCreamlinux.so

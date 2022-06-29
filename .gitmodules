@@ -1,4 +1,0 @@
-[submodule "ext/steamworks_sdk"]
-	path = ext/steamworks_sdk
-	url = https://github.com/20PercentRendered/steamworks_sdk.git
-	branch = 153a

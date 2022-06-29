@@ -16,7 +16,7 @@ INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR})
 
 ADD_LIBRARY(Creamlinux SHARED
 	${CMAKE_SOURCE_DIR}/main.cpp
-	${CMAKE_SOURCE_DIR}/ext/steamworks_sdk/steam
+	${CMAKE_SOURCE_DIR}/ext/steam
 	# ${CMAKE_SOURCE_DIR}/Creamlinux_steamapps.cpp
 )
 add_custom_command(
@@ -27,4 +27,3 @@ add_custom_command(
 # If you want to build the testapp, you'll need to find libsteam_api and copy it to lib/libsteam_api.so
 #ADD_EXECUTABLE(Testapp ${CMAKE_SOURCE_DIR}/test.cpp)
 #TARGET_LINK_LIBRARIES(Testapp libsteam_api.so)
-#TARGET_LINK_LIBRARIES(${CREAMLINUX_NAME} )

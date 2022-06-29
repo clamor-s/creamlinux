@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
-#include "ext/steamworks_sdk/steam/steam_api.h"
+#include "ext/steam/isteamapps.h"
+#include "ext/steam/isteamuser.h"
 #include "spdlog/spdlog.h"
 #include "ext/ini.h"
 #include <string>
@@ -32,17 +33,20 @@ public:
         return dlcs.size();
     }
     bool BIsDlcInstalled(AppId_t appID) {
+        spdlog::info("ISteamApps->BIsDlcInstalled called");
         auto reslt = std::find_if(
             std::begin(dlcs),
             std::end(dlcs),
             [&] (const tuple<int, string> a) { return std::get<0>(a) == appID; }) != std::end(dlcs);
         if (reslt) {
+            spdlog::info("BIsDlcInstalled unlocked {}", appID);
             return true;
         } else {
             return false;
         }
     }
     bool BGetDLCDataByIndex(int iDLC, AppId_t* pAppID, bool* pbAvailable, char* pchName, int cchNameBufferSize) {
+        spdlog::info("ISteamApps->BGetDLCDataByIndex called");
         if ((size_t)iDLC >= dlcs.size()) {
             return false;
         }
@@ -65,7 +69,28 @@ public:
     void RequestAllProofOfPurchaseKeys() { real_steamApps->RequestAllProofOfPurchaseKeys(); }
     bool BIsSubscribedFromFamilySharing() { return real_steamApps->BIsSubscribedFromFamilySharing(); }
     bool BIsSubscribedFromFreeWeekend() { return real_steamApps->BIsSubscribedFromFreeWeekend(); }
-    bool BIsSubscribedApp(AppId_t appID) { return real_steamApps->BIsSubscribedApp(appID); }
+    bool BIsSubscribedApp(AppId_t appID) { 
+        spdlog::info("ISteamApps->BIsSubscribedApp called");
+        if (ini["methods"]["disable_steamapps_issubscribedapp"] == "true") {
+            spdlog::info("BIsSubscribedApp function override disabled");
+            return real_steamApps->BIsSubscribedApp(appID); 
+        } else {
+            spdlog::info("BIsSubscribedApp creamified called");
+            auto reslt = std::find_if(
+                std::begin(dlcs),
+                std::end(dlcs),
+                [&] (const tuple<int, string> a) { return std::get<0>(a) == appID; }) != std::end(dlcs);
+            if (reslt) {
+                spdlog::info("BIsSubscribedApp unlocked {}", appID);
+                return true;
+            } else {
+                if (ini["config"]["issubscribedapp_on_false_use_real"] == "true") {
+                    return real_steamApps->BIsSubscribedApp(appID); 
+                }
+                return false;
+            }
+        }
+    }
     bool BIsAppInstalled(AppId_t appID) { return real_steamApps->BIsAppInstalled(appID); }
     uint32 GetEarliestPurchaseUnixTime(AppId_t appID) { return real_steamApps->GetEarliestPurchaseUnixTime(appID); }
     void InstallDLC(AppId_t appID) { real_steamApps->InstallDLC(appID); }
@@ -98,6 +123,12 @@ public:
         return real_steamUser->InitiateGameConnection_DEPRECATED(pAuthBlob, cbMaxAuthBlob, steamIDGameServer, unIPServer, usPortServer, bSecure);
     };
 	void TerminateGameConnection_DEPRECATED( uint32 unIPServer, uint16 usPortServer ) {
+        return real_steamUser->TerminateGameConnection_DEPRECATED(unIPServer, usPortServer);
+    };
+    int InitiateGameConnection( void *pAuthBlob, int cbMaxAuthBlob, CSteamID steamIDGameServer, uint32 unIPServer, uint16 usPortServer, bool bSecure ) {
+        return real_steamUser->InitiateGameConnection_DEPRECATED(pAuthBlob, cbMaxAuthBlob, steamIDGameServer, unIPServer, usPortServer, bSecure);
+    };
+	void TerminateGameConnection( uint32 unIPServer, uint16 usPortServer ) {
         return real_steamUser->TerminateGameConnection_DEPRECATED(unIPServer, usPortServer);
     };
 	void TrackAppUsageEvent( CGameID gameID, int eAppUsageEvent, const char *pchExtraInfo = "" ) {
@@ -253,7 +284,28 @@ extern "C" EUserHasLicenseForAppResult SteamAPI_ISteamUser_UserHasLicenseForApp(
     spdlog::info("ISteamUser_UserHasLicenseForApp called");
     return (EUserHasLicenseForAppResult)0;
 }
+// for older games
+extern "C" ISteamApps *S_CALLTYPE SteamApps() {
+    spdlog::info("SteamApps() called");
 
+    //get isteamapps
+    void* S_CALLTYPE (*real)();
+    *(void**)(&real) = dlsym(RTLD_NEXT, "SteamApps");
+    ISteamApps* val = (ISteamApps*)real();
+
+    return Hookey_SteamApps(val);
+}
+// for older games
+extern "C" ISteamUser *S_CALLTYPE SteamUser() {
+    spdlog::info("SteamUser() called");
+
+    //get isteamuser 
+    void* S_CALLTYPE (*real)();
+    *(void**)(&real) = dlsym(RTLD_NEXT, "SteamUser");
+    ISteamUser* val = (ISteamUser*)real();
+    
+    return Hookey_SteamUser(val);
+}
 // anti-debugger shenanigans
 long ptrace(int request, int pid, void *addr, void *data) {
     return 0;

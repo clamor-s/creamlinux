@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include "steam/steam_api.h"
+#include "ext/steam/steam_api.h"
 #include <string>
 #include <cassert>
 #include <vector>
