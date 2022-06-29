@@ -1,18 +1,27 @@
 # Creamlinux
-CreamApi(dlc unlocker) for Linux.
+CreamApi clone for Linux.
 
 ## Support
-This should work for any linux native steam title that doesn't block LD_PRELOAD. Not all games will be visible in the launcher. 
+This should work for any linux native steam title that doesn't block LD_PRELOAD. Not all games will however be visible in the popup. Read [Advanced](https://github.com/20PercentRendered/creamlinux#advanced) if this is the case.  
+
 ## Tested games
  - Hearts Of Iron IV
  - Stellaris 
+ - PAYDAY 2
+ 
+## Usage 
+1. Download the [latest](https://github.com/20PercentRendered/creamlinux/releases/latest/download/creamlinux.zip) release of Creamlinux.
+2. Unzip it and copy the files to the game's directory
+3. Set the game's steam launch params to `sh ./cream.sh %command%`.
+4. If you have your own cream_api.ini, copy the DLC lines to Creamlinux's cream_api.ini in the game directory. 
+5. Launch your game and have fun! 
 
-## Usage
-First, clone the project recursively:
+## Building from source
+1. Clone the project recursively:
 ```
 git clone https://github.com/20PercentRendered/creamlinux --recursive
 ```
-1. build the project like any standard CMake project:
+2. build the project like any standard CMake project:
 ```
 mkdir build
 cd build
@@ -20,13 +29,14 @@ cmake ..
 make
 ```
 
-2. Copy `build/lib` folder contents to the game folder.
-3. Then set the game's steam launch params to `./cream.sh %command%`.
-4. If you copied an existing `cream_api.ini`, make sure the line endings are set to linux line endings, otherwise this will not work (just open it and save it again)
+3. Copy `build/lib` folder contents to the game folder.
+4. Then set the game's steam launch params to `sh ./cream.sh %command%`.
+5. If you have your own cream_api.ini, copy the DLC lines to Creamlinux's cream_api.ini in the game directory. 
+## Advanced 
 
-When the dialog pops up, it will look a bit strange due to steam's bundled deps being ancient (gtk2 and zenity).
+If you want to load `cream_api.ini` from a specific path, specify the path with `CREAM_CONFIG_PATH` in the launch options.
 
-If you want to load `cream_api.ini` from a separate path, specify the path with `CREAM_CONFIG_PATH` in the launch options.
+If the game you want to test isn't supported, use `CREAM_GAME_NAME` to specify the game executable's name.
 
 ## Credits
 [pulzed](https://github.com/pulzed) for [mINI](https://github.com/pulzed/mINI)(ini.h)
