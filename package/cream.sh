@@ -25,8 +25,9 @@ function launch_game {
 export IFS=""
 
 if [ -z "$CREAM_GAME_NAME" ]; then
-  echo "launching directly"
+  echo "showing dialog"
 else
+  echo "launching directly"
   SELECTED_GAME="./$CREAM_GAME_NAME"
   launch_game
 fi
