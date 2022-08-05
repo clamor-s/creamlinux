@@ -13,16 +13,21 @@ function launch_game {
       $SELECTED_GAME "$@"
       exit 0
   fi
-  # actually launch the game
-  LD_PRELOAD="$LD_PRELOAD /tmp/libCreamlinux.so" $SELECTED_GAME "$@"
+   # actually launch the game
+  if [ "$CREAM_DEBUGGER" ]; then
+      LD_PRELOAD="$LD_PRELOAD /tmp/libCreamlinux.so" $CREAM_DEBUGGER $SELECTED_GAME
+      exit 0
+  fi
+  LD_PRELOAD="$LD_PRELOAD /tmp/libCreamlinux.so" $SELECTED_GAME
+  exit 0
 }
 # ifs is required because zenity fucks up without it
 export IFS=""
 
 if [ -z "$CREAM_GAME_NAME" ]; then
-  echo ""
+  echo "launching directly"
 else
-  SELECTED_GAME=$CREAM_GAME_NAME
+  SELECTED_GAME="./$CREAM_GAME_NAME"
   launch_game
 fi
 
